@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();
+for(const [n,s] of [['icon-512',512],['icon-192',192],['apple-touch-icon',180]]){const p=await b.newPage({viewport:{width:s,height:s}});
+await p.setContent(`<body style="margin:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="${s}" height="${s}"><rect width="512" height="512" fill="#CF3F2B"/><circle cx="256" cy="256" r="168" fill="#2B2340"/><circle cx="256" cy="256" r="140" fill="#3a3157"/><path d="M256 150c52-8 104 22 110 74 5 44-18 62-22 96-5 40-52 62-96 50-40-11-84-4-104-44-18-36 6-60 10-96 5-48 50-72 102-80z" fill="#FFFDF6"/><circle cx="262" cy="262" r="50" fill="#F2B632"/><circle cx="246" cy="246" r="12" fill="#FFFDF6" opacity=".7"/></svg></body>`);
+await p.screenshot({path:`app/${n}.png`});await p.close();}await b.close()})();
