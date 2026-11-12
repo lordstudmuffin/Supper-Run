@@ -351,7 +351,7 @@ const RESCUE = {
   bland: ['Bland', [
     ['Salt first. Add a pinch, stir, taste, repeat. Most bland food is just under-salted.', []],
     ['It probably needs something sour. Add a small splash of vinegar and taste.', ['vinegar']],
-    ['Squeeze a lemon or lime over it right before serving.', ['lemon']],
+    ['Squeeze a lemon or lime over it right before serving.', ['lemon', 'lime']],
     ['Melt in a knob of butter at the end. Fat carries flavor.', ['butter']],
     ['A splash of soy sauce adds depth without tasting like soy sauce.', ['soy']],
     ['Give it some heat: a few shakes of hot sauce.', ['hotsauce']],
