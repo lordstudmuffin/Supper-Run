@@ -407,3 +407,123 @@ const EPITAPHS = [
   '{d}. It flew too close to the burner.',
   'Rest now, {d}. You were seasoned with hope.'
 ];
+
+// ---------- Dish blueprints ----------
+// Every challenge is drawn from ONE of these, one card per slot, so the cards always make a real dish together.
+// n = the dish idea shown under the cards. th = themes it suits ('*' = any savory theme).
+// s = three slots; every item in a slot must work with every item in the other two slots.
+const DISHES = [
+  ['tacos', 'Tacos or a burrito bowl', ['street', 'diner', 'tiny', 'potluck', 'picnic'], [
+    ['gbeef', 'chicken', 'gturkey', 'blackbeans', 'pinto', 'chorizo', 'tilapia', 'shrimp', 'gpork', 'rotisserie'],
+    ['tortilla', 'corntortilla', 'rice'],
+    ['salsa', 'lime', 'avocado', 'cilantro', 'jalapeno', 'cheddar', 'sourcream', 'corn', 'greenchiles', 'relish', 'cabbage', 'taco']]],
+  ['nachos', 'Loaded nachos or quesadillas', ['street', 'diner', 'potluck'], [
+    ['gbeef', 'chicken', 'blackbeans', 'refried', 'chorizo', 'pinto', 'rotisserie'],
+    ['tchips', 'tortilla'],
+    ['cheddar', 'salsa', 'jalapeno', 'sourcream', 'avocado', 'greenchiles', 'corn', 'relish', 'enchilada']]],
+  ['stirfry', 'A stir-fry over rice or noodles', ['bento', 'street', 'space'], [
+    ['chicken', 'tofu', 'gpork', 'shrimp', 'steak', 'eggs', 'tempeh'],
+    ['rice', 'ramen', 'ricenoodle'],
+    ['soy', 'ginger', 'scallion', 'broccoli', 'pepper', 'bokchoy', 'snappeas', 'sesameoil', 'teriyaki', 'sriracha', 'mushroom', 'gochujang', 'chilicrisp', 'edamame']]],
+  ['ramen', 'A loaded bowl of ramen', ['bento', 'diner', 'street'], [
+    ['eggs', 'chicken', 'gpork', 'tofu', 'shrimp', 'rotisserie'],
+    ['ramen'],
+    ['scallion', 'miso', 'corn', 'spinach', 'bokchoy', 'mushroom', 'kimchi', 'chilicrisp', 'nori', 'ginger', 'sriracha', 'sesame']]],
+  ['friedrice', 'Fried rice', ['bento', 'diner', 'street', 'space'], [
+    ['eggs', 'chicken', 'shrimp', 'ham', 'bacon', 'tofu', 'gpork'],
+    ['rice'],
+    ['peas', 'mixedveg', 'scallion', 'soy', 'carrot', 'corn', 'kimchi', 'pineapple', 'edamame']]],
+  ['katsu', 'Crispy katsu with rice and slaw', ['bento'], [
+    ['porkchop', 'chicken', 'tofu'],
+    ['panko'],
+    ['cabbage', 'cucumber', 'scallion', 'rice', 'curry']]],
+  ['curry', 'A curry with rice or naan', ['fancy', 'grandma', 'potluck', 'finale', 'space'], [
+    ['chicken', 'chickpeas', 'lentils', 'tofu', 'shrimp', 'cauliflower', 'potato'],
+    ['rice', 'naan'],
+    ['curry', 'coconut', 'currypaste', 'spinach', 'cantomato', 'ginger', 'yogurt', 'cilantro', 'peas']]],
+  ['pasta', 'A pasta dish', ['fancy', 'grandma', 'diner', 'potluck', 'finale', 'gothic'], [
+    ['sausage', 'chicken', 'gbeef', 'shrimp', 'bacon', 'whitebeans', 'mushroom', 'eggs'],
+    ['pasta', 'gnocchi'],
+    ['parmesan', 'spinach', 'cantomato', 'marinara', 'basil', 'lemon', 'cream', 'pesto', 'sundried', 'ricotta', 'broccoli', 'zucchini', 'pepperflakes', 'kale']]],
+  ['mac', 'Mac and cheese or a cheesy bake', ['grandma', 'diner', 'potluck'], [
+    ['macbox', 'pasta', 'potato'],
+    ['cheddar', 'creamcheese', 'cream', 'milk', 'parmesan'],
+    ['bacon', 'ham', 'broccoli', 'jalapeno', 'panko', 'peas', 'rotisserie', 'greenchiles', 'spinach']]],
+  ['burger', 'Burgers or sliders', ['diner', 'picnic', 'street', 'tavern', 'tiny'], [
+    ['gbeef', 'gturkey', 'blackbeans', 'chicken'],
+    ['buns', 'bread'],
+    ['cheddar', 'american', 'bacon', 'onion', 'pickles', 'bbq', 'avocado', 'mushroom', 'jalapeno', 'tomato']]],
+  ['melt', 'A loaded grilled cheese or melt', ['diner', 'picnic'], [
+    ['cheddar', 'american', 'mozzarella', 'ham', 'delturkey', 'tuna'],
+    ['bread', 'bagel', 'muffin'],
+    ['tomato', 'bacon', 'pickles', 'onion', 'spinach', 'avocado', 'jalapeno', 'mustard']]],
+  ['pizza', 'Homemade pizza or flatbread', ['diner', 'picnic', 'street', 'tavern', 'finale', 'tiny'], [
+    ['pizzadough', 'naan', 'pita', 'tortilla'],
+    ['pepperoni', 'sausage', 'chicken', 'ham', 'mushroom', 'bacon', 'spinach'],
+    ['mozzarella', 'marinara', 'pesto', 'pineapple', 'pepper', 'olives', 'onion', 'jalapeno', 'bbq', 'feta', 'basil', 'ricotta', 'arugula']]],
+  ['bbq', 'A backyard BBQ plate', ['picnic', 'street', 'diner', 'pirate', 'potluck'], [
+    ['chicken', 'wings', 'porkchop', 'sausage', 'hotdog'],
+    ['corn', 'potato', 'cabbage', 'buns', 'sweetpotato', 'pinto'],
+    ['bbq', 'honey', 'mustard', 'pickles', 'hotsauce', 'paprika']]],
+  ['wraps', 'Wraps or stuffed pitas', ['street', 'picnic', 'space'], [
+    ['chicken', 'chickpeas', 'glamb', 'rotisserie', 'halloumi', 'gturkey'],
+    ['pita', 'tortilla', 'naan'],
+    ['hummus', 'yogurt', 'cucumber', 'tomato', 'feta', 'lettuce', 'tahini', 'harissa', 'lemon', 'mint', 'olives', 'redpeppers']]],
+  ['bowl', 'A grain bowl', ['fancy', 'picnic', 'space'], [
+    ['chicken', 'salmon', 'chickpeas', 'tofu', 'eggs', 'halloumi', 'shrimp'],
+    ['quinoa', 'rice', 'couscous'],
+    ['avocado', 'cucumber', 'feta', 'spinach', 'kale', 'tomato', 'sweetpotato', 'lemon', 'edamame', 'corn', 'tahini', 'arugula']]],
+  ['fishsear', 'Pan-seared fish with a side', ['fancy', 'finale'], [
+    ['salmon', 'tilapia', 'scallops', 'shrimp'],
+    ['rice', 'asparagus', 'potato', 'couscous', 'greenbeans', 'spinach'],
+    ['lemon', 'butter', 'capers', 'dill', 'parsley', 'miso', 'pesto']]],
+  ['fishfry', 'A fish fry', ['diner', 'pirate', 'tavern'], [
+    ['tilapia', 'fishsticks', 'shrimp', 'cansalmon', 'tuna'],
+    ['potato', 'fries', 'panko', 'cornmeal', 'cabbage'],
+    ['lemon', 'pickles', 'mayo', 'dill', 'capers', 'hotsauce', 'paprika']]],
+  ['steak', 'A steak or chop dinner', ['fancy', 'tavern', 'gothic', 'finale'], [
+    ['steak', 'porkchop'],
+    ['potato', 'asparagus', 'mushroom', 'sweetpotato', 'greenbeans', 'sprouts'],
+    ['butter', 'rosemary', 'blue', 'balsamic', 'mustard', 'thyme', 'onion']]],
+  ['roast', 'A sheet-pan roast dinner', ['gothic', 'fancy', 'grandma', 'tavern'], [
+    ['chicken', 'porkchop', 'sausage', 'salmon', 'tofu', 'chickpeas'],
+    ['potato', 'sweetpotato', 'sprouts', 'carrot', 'broccoli', 'cauliflower', 'squash', 'beet', 'asparagus', 'greenbeans'],
+    ['rosemary', 'thyme', 'lemon', 'honey', 'mustard', 'balsamic', 'parmesan', 'paprika', 'maple']]],
+  ['glazed', 'Something dark, glazed and dramatic', ['gothic'], [
+    ['porkchop', 'chicken', 'salmon', 'steak', 'mushroom'],
+    ['beet', 'squash', 'sweetpotato', 'potato', 'kale'],
+    ['pomegranate', 'balsamic', 'honey', 'rosemary', 'maple', 'berries']]],
+  ['stew', 'A hearty stew or chili', ['gothic', 'tavern', 'pirate', 'grandma', 'potluck'], [
+    ['stewbeef', 'gbeef', 'chicken', 'sausage', 'kidney', 'lentils', 'glamb'],
+    ['potato', 'carrot', 'cantomato', 'sweetpotato', 'squash'],
+    ['paprika', 'cumin', 'chilipowder', 'thyme', 'rosemary', 'bread', 'cheddar', 'sourcream', 'kale']]],
+  ['soup', 'A cozy soup', ['gothic', 'grandma', 'tavern', 'pirate'], [
+    ['chicken', 'rotisserie', 'lentils', 'whitebeans', 'sausage'],
+    ['chxbroth', 'vegbroth', 'cantomato', 'potato', 'squash'],
+    ['carrot', 'celery', 'kale', 'spinach', 'thyme', 'eggnoodles', 'parmesan', 'bread']]],
+  ['hash', 'A skillet hash', ['brinner', 'diner', 'tavern', 'pirate'], [
+    ['potato', 'sweetpotato', 'hashbrowns'],
+    ['sausage', 'bacon', 'chorizo', 'ham', 'rotisserie', 'blackbeans'],
+    ['eggs', 'onion', 'pepper', 'cheddar', 'salsa', 'hotsauce', 'kale', 'spinach']]],
+  ['scramble', 'A scramble, omelet or breakfast burrito', ['brinner', 'diner'], [
+    ['eggs'],
+    ['potato', 'hashbrowns', 'bread', 'tortilla', 'muffin'],
+    ['bacon', 'sausage', 'ham', 'cheddar', 'spinach', 'pepper', 'mushroom', 'salsa', 'avocado', 'feta', 'hotsauce']]],
+  ['bsandwich', 'Breakfast sandwiches', ['brinner', 'diner', 'picnic'], [
+    ['eggs'],
+    ['bagel', 'muffin', 'biscuits', 'bread'],
+    ['bacon', 'sausage', 'ham', 'cheddar', 'american', 'avocado', 'spinach', 'tomato', 'hotsauce']]],
+  ['pancakes', 'Pancakes, waffles or French toast', ['brinner', 'diner', 'tiny'], [
+    ['pancakemix', 'waffles', 'bread', 'oats'],
+    ['banana', 'berries', 'apple', 'peaches', 'pumpkin'],
+    ['maple', 'honey', 'choc', 'cinnamon', 'pb', 'yogurt', 'walnut', 'pecan', 'bacon', 'hazelspread']]],
+  // used for the Three Courses boss and the Tiny Food theme
+  ['starter', 'Little bites to start', ['tiny'], [
+    ['bread', 'crackers', 'pita', 'cucumber'],
+    ['hummus', 'creamcheese', 'goat', 'feta', 'mozzarella', 'avocado'],
+    ['tomato', 'basil', 'honey', 'balsamic', 'olives', 'redpeppers', 'sundried', 'lemon']]],
+  ['dessert', 'A dessert', [], [
+    ['banana', 'apple', 'berries', 'peaches', 'pear', 'pumpkin', 'mango'],
+    ['oats', 'graham', 'pastry', 'biscuits', 'cookies'],
+    ['cinnamon', 'choc', 'maple', 'honey', 'cream', 'creamcheese', 'walnut', 'pecan', 'coconutflakes', 'marshmallow', 'icecream']]]
+].map(([id, n, th, s]) => ({ id, n, th, s }));

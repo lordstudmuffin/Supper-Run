@@ -84,46 +84,90 @@ function bossReady() {
 // ---------- drawing a challenge ----------
 function card(g, src) { return { id: g.id, n: g.n, e: g.e, c: src === 'pantry' ? 0 : g.c, s: g.s, k: g.k, src, rare: g.lv > 0, have: src === 'pantry' }; }
 function deck(L) { return Object.values(ING).filter(g => !g.st && g.lv <= L && !blocked(g)); }
-function drawCards(n, pool, cap, L) {
-  const commons = pool.filter(g => !g.lv), rares = pool.filter(g => g.lv);
+// The usable cards in one slot of a dish, for this level and avoid list.
+const slotPool = (slot, L) => slot.map(id => ING[id]).filter(g => g && !g.st && g.lv <= L && !blocked(g));
+const dishOf = id => DISHES.find(d => d.id === id);
+function dishesFor(themeId) { return DISHES.filter(d => d.th.includes(themeId) || (['mono', 'finale', 'potluck'].includes(themeId) && d.id !== 'dessert' && d.id !== 'starter')); }
+// Pick one card per slot (or `counts[i]` cards from slot i), all different, under the price cap.
+function fillDish(d, L, counts, cap, fixed) {
+  const pools = d.s.map(slot => slotPool(slot, L));
+  for (let i = 0; i < 3; i++) if (!fixed[i] && pools[i].length < counts[i]) return null;
   let best = null;
-  for (let i = 0; i < 300; i++) {
-    const withRare = rares.length && Math.random() < (L >= 2 ? 0.4 : 0);
-    let c = shuffle(commons).slice(0, withRare ? n - 1 : n); if (withRare) c.push(pick(rares));
-    if (c.length < n) c = shuffle(pool).slice(0, n);
-    const prot = c.filter(g => MEATS.includes(g.k) || g.k === 'egg').length, kinds = new Set(c.map(g => g.k)).size;
-    const cost = c.reduce((a, g) => a + g.c, 0);
-    if (!best) best = c;
-    const main = c.filter(g => MEATS.includes(g.k) || ['egg', 'veg', 'grain', 'legume', 'dairy'].includes(g.k)).length, small = c.filter(g => ['spice', 'herb', 'snack', 'sweet'].includes(g.k)).length;
-    if (cost <= cap && prot <= 1 && kinds >= Math.min(n, 3) && main >= 1 && small <= 1) return c;
-    if (cost <= cap && prot <= 1) best = c;
+  for (let t = 0; t < 80; t++) {
+    const used = new Set(fixed.filter(Boolean).map(g => g.id)), picks = [];
+    let ok = true;
+    for (let i = 0; i < 3 && ok; i++) {
+      if (fixed[i]) { picks.push([fixed[i], true]); continue; }
+      const opts = shuffle(pools[i].filter(g => !used.has(g.id)));
+      if (opts.length < counts[i]) { ok = false; break; }
+      for (const g of opts.slice(0, counts[i])) { used.add(g.id); picks.push([g, false]); }
+    }
+    if (!ok) continue;
+    const cost = picks.reduce((a, [g, own]) => a + (own ? 0 : g.c), 0);
+    if (cost <= cap) return picks;
+    if (!best || cost < best.cost) best = Object.assign(picks, { cost });
   }
   return best;
 }
+// Pantry mode: find dishes where your pantry fills two slots, then buy one cheap thing for the last slot.
+function pantryDish(L, themeIds) {
+  const mine = S.pantry.map(resolve).filter(g => g && g.id && !g.st && !blocked(g));
+  const options = [];
+  for (const d of DISHES) {
+    if (d.id === 'dessert' || d.id === 'starter') continue;
+    const slotHas = d.s.map(slot => mine.filter(g => slot.includes(g.id)));
+    // try every way of covering two slots with two different pantry items
+    for (const [a, b] of [[0, 1], [0, 2], [1, 2]]) for (const x of slotHas[a]) for (const y of slotHas[b]) if (x.id !== y.id) {
+      const rest = 3 - a - b, cheap = slotPool(d.s[rest], L).filter(g => g.c <= 4 && g.id !== x.id && g.id !== y.id && !mine.some(m => m.id === g.id));
+      if (cheap.length) options.push({ d, fixed: { [a]: x, [b]: y }, rest, cheap, fits: d.th.some(t => themeIds.includes(t)) });
+    }
+  }
+  if (!options.length) return null;
+  const fit = options.filter(o => o.fits), o = pick(fit.length ? fit : options);
+  const cards = [0, 1, 2].map(i => i === o.rest ? card(pick(o.cheap), 'mystery') : card(o.fixed[i], 'pantry'));
+  return { d: o.d, cards };
+}
 function draw(mode, bossId) {
   if (!S.prefs.ok) return null;
-  const L = levelInfo().L, pool = deck(L), boss = bossId ? BOSSES.find(b => b.id === bossId) : null;
-  let cards = [];
-  if (mode === 'pantry') {
-    const mine = S.pantry.map(resolve).filter(g => !g.st && !blocked(g));
-    if (mine.length < 2) return null;
-    const names = new Set(S.pantry.map(p => stems(p.n).join(' ')));
-    const cheap = pool.filter(g => g.c <= 4 && !names.has(stems(g.n).join(' ')) && !S.pantry.some(p => p.id === g.id));
-    if (!cheap.length) return null;
-    const nm = Math.random() < 0.3 && cheap.length > 1 ? 2 : 1;
-    cards = [...shuffle(mine).slice(0, 2).map(g => card(g, 'pantry')), ...shuffle(cheap).slice(0, nm).map(g => card(g, 'mystery'))];
+  const L = levelInfo().L, boss = bossId ? BOSSES.find(b => b.id === bossId) : null;
+  const themes = THEMES.filter(t => t.lv <= L), last = S.log.length ? S.log[S.log.length - 1].theme : '';
+  const fresh = themes.filter(t => t.id !== last && (!S.cur || t.id !== S.cur.theme));
+  let cards = null, dish = null, theme = null, idea = '';
+  if (boss && boss.id === 'three') {
+    // one card per course: a starter bite, a main, a dessert fruit
+    const parts = [['starter', 1, 'Starter'], [null, 0, 'Main'], ['dessert', 0, 'Dessert']];
+    cards = [];
+    for (const [id, slot, role] of parts) {
+      const d = id ? dishOf(id) : pick(DISHES.filter(x => !['starter', 'dessert', 'pancakes', 'scramble', 'bsandwich', 'hash', 'mac'].includes(x.id) && slotPool(x.s[0], L).length));
+      const opts = slotPool(d.s[slot], L).filter(g => !cards.some(c => c.id === g.id));
+      if (!opts.length) return null;
+      cards.push(Object.assign(card(pick(opts), 'deck'), { role }));
+    }
+    theme = pick(fresh.length ? fresh : themes); idea = 'A starter, a main and a dessert';
+  } else if (mode === 'pantry') {
+    const r = pantryDish(L, fresh.map(t => t.id)); if (!r) return null;
+    cards = r.cards; dish = r.d;
   } else {
-    const n = boss ? boss.cards : 3;
-    if (pool.length < n) return null;
-    cards = drawCards(n, pool, n > 3 ? 20 : 15, L).map(g => card(g, 'deck'));
+    const counts = boss && boss.cards === 5 ? [1, 2, 2] : [1, 1, 1], cap = boss && boss.cards === 5 ? 20 : 15;
+    for (const t of shuffle(fresh.length ? fresh : themes)) {
+      for (const d of shuffle(dishesFor(t.id))) {
+        const p = fillDish(d, L, counts, cap, []);
+        if (p && p.cost === undefined) { cards = p.map(([g]) => card(g, 'deck')); dish = d; theme = t; break; }
+      }
+      if (cards) break;
+    }
+    if (!cards) { // the avoid list emptied every themed dish: take any dish that still works
+      for (const d of shuffle(DISHES.filter(x => x.id !== 'dessert'))) { const p = fillDish(d, L, counts, cap + 10, []); if (p) { cards = p.map(([g]) => card(g, 'deck')); dish = d; break; } }
+      if (!cards) return null;
+    }
   }
   if (cards.some(c => blocked(resolve(c)))) return null; // belt and braces: never deal a blocked card
-  const themes = THEMES.filter(t => t.lv <= L), last = S.log.length ? S.log[S.log.length - 1].theme : '';
-  const theme = pick(themes.filter(t => t.id !== last && (!S.cur || t.id !== S.cur.theme)));
+  if (!theme) { const fits = fresh.filter(t => dish.th.includes(t.id)); theme = pick(fits.length ? fits : (fresh.length ? fresh : themes)); }
+  if (dish) idea = dish.n;
   const mpool = MODS.filter(m => m.lv <= L), m1 = pick(mpool), mods = [m1.id];
   if (L >= 4) { const m2 = pick(mpool.filter(m => m.id !== m1.id && !(m.min && m1.min))); mods.push(m2.id); }
-  return { id: 'r' + Date.now().toString(36), stage: 'drawn', mode, boss: bossId || null, theme: theme.id, cards, mods, head: headNow(),
-    redraws: S.cur && S.cur.stage === 'drawn' ? 0 : 1, rescue: null, timer: null, started: 0, dish: '', r: [[0, 0, 0], [0, 0, 0]], ings: '', steps: '', epi: '', epiT: '', force: null };
+  return { id: 'r' + Date.now().toString(36), stage: 'drawn', mode, boss: bossId || null, theme: theme.id, dish: '', idea, cards, mods, head: headNow(),
+    redraws: S.cur && S.cur.stage === 'drawn' ? 0 : 1, rescue: null, timer: null, started: 0, r: [[0, 0, 0], [0, 0, 0]], ings: '', steps: '', epi: '', epiT: '', force: null };
 }
 const estCost = c => c.cards.reduce((a, x) => a + (x.have ? 0 : x.c), 0);
 const themeOf = id => THEMES.find(t => t.id === id) || THEMES[0];
@@ -257,10 +301,11 @@ function safetyHTML(cards, full) {
     ${full ? `<ul class="basics">${BASICS.map(b => `<li>${b}</li>`).join('')}</ul><p class="small soft">Temperatures are the USDA safe minimums, measured inside the food.</p>` : `<p class="small soft">USDA safe minimums. The full chart stays on screen while you cook.</p>`}
   </div>`;
 }
+const ideaHTML = c => c.idea ? `<p class="idea"><span class="eyebrow">These cards make</span><br><b>${esc(c.idea)}</b> <span class="small soft">That is the starting point. Twist it to fit the theme.</span></p>` : '';
 function cardsHTML(c, editable) {
   return `<div class="deal">${c.cards.map((x, i) => `<div class="ing ${x.rare ? 'rare' : ''} ${x.src === 'mystery' ? 'mystery' : ''}">
     <span class="e">${x.e}</span><b>${esc(x.n)}</b>
-    <span class="tag">${x.src === 'pantry' ? 'Pantry' : x.src === 'mystery' ? 'Mystery' : x.rare ? 'Rare' : 'Card'}</span>
+    <span class="tag">${x.role ? x.role : x.src === 'pantry' ? 'Pantry' : x.src === 'mystery' ? 'Mystery' : x.rare ? 'Rare' : 'Card'}</span>
     ${x.src === 'pantry' ? '' : editable ? `<button class="have" data-act="have" data-i="${i}" aria-pressed="${x.have}">${x.have ? 'Have it' : '~' + money(x.c)}</button>` : ''}
   </div>`).join('')}</div>`;
 }
@@ -354,7 +399,7 @@ V.draw = () => {
   const cost = estCost(c);
   return `${bar('Round ' + (S.log.length + 1))}
     <div class="sheet">${challengeHTML(c)}
-      <p class="eyebrow">You must use</p>${cardsHTML(c, true)}
+      <p class="eyebrow">You must use</p>${cardsHTML(c, true)}${ideaHTML(c)}
       <p class="eyebrow">${c.mods.length > 1 ? 'Modifiers' : 'Modifier'}</p>${modsHTML(c)}
       <p class="eyebrow">Roles</p>${rolesHTML(c)}
       <p><b>Estimated groceries: about ${money(cost)}.</b> <span class="small soft">A rough guess at US prices for the cards you still need to buy. Tap a price if you already have that card.</span></p>
@@ -379,7 +424,7 @@ V.cook = () => {
   else if (rescueCat === 'pick') resc = `<p>What is going wrong?</p><div class="chips">${Object.entries(RESCUE).map(([k, v]) => `<button class="btn ghost" data-act="rescue" data-cat="${k}">${v[0]}</button>`).join('')}</div><button class="link" data-act="rescueclose">Never mind, we have got this</button>`;
   else resc = `<p class="small soft">One rescue per round. Skip it and earn 10 bonus XP.</p><button class="btn yolk wide" data-act="rescueopen">Use our rescue</button>`;
   return `${bar('Cooking', 'home')}
-    <div class="sheet">${challengeHTML(c)}<div class="chips">${c.cards.map(x => `<span class="chip">${x.e} ${esc(x.n)}</span>`).join('')}</div>${modsHTML(c)}${rolesHTML(c)}</div>
+    <div class="sheet">${challengeHTML(c)}<div class="chips">${c.cards.map(x => `<span class="chip">${x.e} ${esc(x.n)}</span>`).join('')}</div>${ideaHTML(c)}${modsHTML(c)}${rolesHTML(c)}</div>
     <div class="sheet"><p class="eyebrow">${tm ? tm.n : 'Time in the kitchen'}</p><div class="timer" id="clock">${clockText(c)}</div>
       ${tm && !c.timer ? `<button class="btn wide" data-act="timer">Start the ${tm.min}-minute clock</button>` : ''}
       ${swap ? `<p class="small" id="swapmsg">${tm ? 'The game calls the swap at the halfway mark.' : 'Call the swap yourselves when you are about halfway.'}</p>` : ''}</div>
@@ -473,7 +518,7 @@ function go(v) { view = v; open = null; rescueCat = null; if (v !== 'prefs') dra
 const A = {
   draw(d) {
     const c = draw(d.mode, d.boss);
-    if (!c) return toast(S.prefs.ok ? 'Not enough cards to deal with the current avoid list and pantry.' : 'Set up allergies first.');
+    if (!c) return toast(!S.prefs.ok ? 'Set up allergies first.' : d.mode === 'pantry' ? 'Your pantry does not make a dish yet. Add a main ingredient and a base, like chicken and rice, or eggs and bread.' : 'Not enough cards to deal with the current avoid list.');
     if (mutate(s => { s.cur = c; }, true)) go('draw');
   },
   redraw() { const o = S.cur; if (!o || !o.redraws) return; const c = draw(o.mode, o.boss); if (c) { c.redraws = 0; mutate(s => { s.cur = c; }); } },
