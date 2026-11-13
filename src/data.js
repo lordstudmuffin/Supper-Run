@@ -517,6 +517,143 @@ const DISHES = [
     ['pancakemix', 'waffles', 'bread', 'oats'],
     ['banana', 'berries', 'apple', 'peaches', 'pumpkin'],
     ['maple', 'honey', 'choc', 'cinnamon', 'pb', 'yogurt', 'walnut', 'pecan', 'bacon', 'hazelspread']]],
+  // ---- second batch ----
+  ['cajun', 'A Cajun rice skillet (jambalaya-style)', ['pirate', 'tavern', 'potluck', 'street'], [
+    ['sausage', 'chicken', 'shrimp', 'chorizo'],
+    ['rice'],
+    ['pepper', 'celery', 'cantomato', 'paprika', 'hotsauce', 'onion']]],
+  ['enchiladas', 'Enchiladas', ['grandma', 'potluck', 'diner'], [
+    ['chicken', 'rotisserie', 'gbeef', 'blackbeans', 'pinto'],
+    ['corntortilla', 'tortilla'],
+    ['enchilada', 'cheddar', 'greenchiles', 'sourcream', 'corn', 'salsa']]],
+  ['fajitas', 'Sizzling fajitas', ['street', 'diner', 'potluck'], [
+    ['chicken', 'steak', 'shrimp', 'tofu', 'mushroom'],
+    ['pepper', 'onion', 'zucchini'],
+    ['tortilla', 'corntortilla', 'lime', 'sourcream', 'avocado', 'salsa']]],
+  ['tortillasoup', 'Chicken tortilla soup', ['grandma', 'potluck', 'street'], [
+    ['chicken', 'rotisserie', 'blackbeans'],
+    ['chxbroth', 'cantomato', 'enchilada'],
+    ['tchips', 'avocado', 'lime', 'cilantro', 'corn', 'sourcream', 'cheddar']]],
+  ['huevos', 'Huevos rancheros', ['brinner', 'diner'], [
+    ['eggs'],
+    ['corntortilla', 'tortilla'],
+    ['salsa', 'refried', 'blackbeans', 'avocado', 'cheddar', 'cilantro', 'greenchiles']]],
+  ['shakshuka', 'Eggs baked in tomato sauce (shakshuka)', ['brinner', 'fancy', 'gothic'], [
+    ['eggs'],
+    ['cantomato', 'marinara'],
+    ['feta', 'cumin', 'paprika', 'harissa', 'bread', 'pita', 'pepper', 'spinach']]],
+  ['frittata', 'A frittata or quiche', ['brinner', 'fancy', 'grandma', 'picnic'], [
+    ['eggs'],
+    ['pastry', 'potato', 'hashbrowns', 'zucchini'],
+    ['ham', 'bacon', 'spinach', 'feta', 'goat', 'cheddar', 'mushroom', 'broccoli', 'tomato']]],
+  ['biscuitgravy', 'Biscuits and sausage gravy', ['brinner', 'diner', 'grandma'], [
+    ['sausage', 'gpork', 'bacon'],
+    ['biscuits'],
+    ['milk', 'eggs', 'hotsauce', 'cheddar']]],
+  ['chxwaffles', 'Chicken and waffles', ['diner', 'brinner'], [
+    ['chicken', 'wings'],
+    ['waffles', 'biscuits'],
+    ['maple', 'honey', 'hotsauce', 'butter']]],
+  ['chxsandwich', 'Crispy chicken sandwiches', ['diner', 'street', 'picnic'], [
+    ['chicken'],
+    ['buns', 'bread'],
+    ['pickles', 'hotsauce', 'mayo', 'honey', 'cabbage', 'ranch', 'cheddar']]],
+  ['sloppy', 'Sloppy joes', ['diner', 'potluck', 'picnic'], [
+    ['gbeef', 'gturkey', 'lentils'],
+    ['buns', 'bread'],
+    ['ketchup', 'pepper', 'onion', 'worcester', 'mustard', 'cheddar', 'pickles']]],
+  ['hotdogs', 'Loaded hot dogs', ['street', 'diner', 'picnic'], [
+    ['hotdog', 'sausage', 'chorizo'],
+    ['buns'],
+    ['mustard', 'relish', 'onion', 'cheddar', 'pickles', 'ketchup', 'cabbage', 'bacon', 'jalapeno', 'kimchi']]],
+  ['bakedpotato', 'Loaded baked potatoes', ['diner', 'picnic', 'potluck', 'tavern'], [
+    ['potato', 'sweetpotato'],
+    ['bacon', 'blackbeans', 'rotisserie', 'chorizo', 'ham'],
+    ['cheddar', 'sourcream', 'scallion', 'butter', 'salsa']]],
+  ['skewers', 'Skewers off the grill or broiler', ['street', 'picnic', 'tavern', 'pirate', 'tiny'], [
+    ['chicken', 'shrimp', 'steak', 'sausage', 'tofu'],
+    ['pepper', 'zucchini', 'onion', 'pineapple', 'mushroom', 'tomato'],
+    ['lemon', 'teriyaki', 'bbq', 'harissa', 'rice', 'pita']]],
+  ['meatballs', 'Meatballs (with pasta or in a sub)', ['grandma', 'potluck', 'tavern', 'diner', 'tiny'], [
+    ['gbeef', 'gturkey', 'gpork', 'sausage'],
+    ['pasta', 'buns', 'bread'],
+    ['parmesan', 'mozzarella', 'marinara', 'basil', 'ricotta']]],
+  ['bakedpasta', 'A baked pasta (lasagna-style or baked ziti)', ['grandma', 'potluck', 'gothic', 'tavern'], [
+    ['gbeef', 'sausage', 'spinach', 'chicken', 'zucchini', 'eggplant'],
+    ['pasta'],
+    ['ricotta', 'mozzarella', 'marinara', 'parmesan', 'basil']]],
+  ['cutlets', 'Crispy cutlets (schnitzel or parm)', ['tavern', 'grandma', 'diner', 'fancy'], [
+    ['chicken', 'porkchop', 'eggplant'],
+    ['panko', 'cornmeal'],
+    ['marinara', 'mozzarella', 'lemon', 'parmesan', 'potato', 'cabbage', 'mustard']]],
+  ['risotto', 'A creamy risotto', ['fancy', 'gothic', 'finale'], [
+    ['mushroom', 'shrimp', 'chicken', 'squash', 'peas', 'asparagus', 'sausage'],
+    ['rice'],
+    ['parmesan', 'butter', 'lemon', 'thyme', 'spinach', 'cream']]],
+  ['stroganoff', 'Stroganoff-style noodles', ['grandma', 'tavern', 'gothic'], [
+    ['stewbeef', 'gbeef', 'mushroom', 'chicken'],
+    ['eggnoodles', 'rice', 'pasta'],
+    ['sourcream', 'cream', 'mustard', 'thyme', 'worcester', 'onion']]],
+  ['stuffedpeppers', 'Stuffed peppers or zucchini boats', ['grandma', 'potluck', 'gothic'], [
+    ['pepper', 'zucchini'],
+    ['gbeef', 'gturkey', 'sausage', 'blackbeans'],
+    ['rice', 'quinoa', 'cheddar', 'mozzarella', 'marinara', 'salsa', 'feta', 'cantomato']]],
+  ['potpie', 'A pot pie', ['grandma', 'tavern', 'gothic', 'potluck'], [
+    ['chicken', 'rotisserie', 'gturkey', 'mushroom'],
+    ['pastry', 'biscuits'],
+    ['peas', 'mixedveg', 'carrot', 'celery', 'thyme', 'cream', 'milk']]],
+  ['shepherds', "Shepherd's or cottage pie", ['tavern', 'gothic', 'grandma', 'pirate'], [
+    ['glamb', 'gbeef', 'gturkey', 'lentils'],
+    ['potato', 'sweetpotato'],
+    ['peas', 'carrot', 'mixedveg', 'worcester', 'thyme', 'cheddar', 'tomatopaste', 'rosemary']]],
+  ['chowder', 'A creamy chowder', ['pirate', 'tavern', 'grandma', 'gothic'], [
+    ['tilapia', 'shrimp', 'cansalmon', 'bacon', 'chicken'],
+    ['potato', 'corn'],
+    ['cream', 'milk', 'celery', 'thyme', 'dill', 'scallion']]],
+  ['noodlesoup', 'A noodle soup (pho or ramen-shop style)', ['bento', 'street', 'gothic', 'grandma'], [
+    ['chicken', 'steak', 'shrimp', 'tofu', 'rotisserie'],
+    ['ricenoodle', 'eggnoodles', 'ramen'],
+    ['chxbroth', 'vegbroth', 'ginger', 'lime', 'cilantro', 'scallion', 'bokchoy', 'sriracha', 'mint']]],
+  ['teriyaki', 'A teriyaki plate', ['bento', 'street'], [
+    ['chicken', 'salmon', 'tofu', 'porkchop'],
+    ['rice'],
+    ['teriyaki', 'broccoli', 'sesame', 'scallion', 'pineapple', 'edamame']]],
+  ['sweetsour', 'Sweet and sour, takeout style', ['bento', 'diner', 'street'], [
+    ['chicken', 'gpork', 'shrimp', 'tofu'],
+    ['rice'],
+    ['pineapple', 'pepper', 'onion', 'carrot']]],
+  ['korean', 'A Korean-style rice bowl (bibimbap)', ['bento', 'street', 'space'], [
+    ['gbeef', 'chicken', 'tofu', 'gpork', 'eggs'],
+    ['rice'],
+    ['gochujang', 'kimchi', 'spinach', 'carrot', 'cucumber', 'sesame', 'scallion', 'sesameoil']]],
+  ['sushibowl', 'A sushi-style rice bowl (cooked or canned fish)', ['bento', 'fancy', 'space'], [
+    ['salmon', 'tuna', 'shrimp', 'tofu', 'cansalmon'],
+    ['rice'],
+    ['cucumber', 'avocado', 'nori', 'edamame', 'sesame', 'sriracha', 'mango', 'scallion', 'mayo']]],
+  ['onigiri', 'Rice balls (onigiri)', ['bento', 'picnic', 'tiny'], [
+    ['tuna', 'cansalmon', 'eggs', 'chicken'],
+    ['rice'],
+    ['nori', 'sesame', 'mayo', 'scallion', 'soy']]],
+  ['okonomiyaki', 'Savory cabbage pancakes (okonomiyaki)', ['bento', 'street', 'diner'], [
+    ['cabbage'],
+    ['bacon', 'shrimp', 'gpork'],
+    ['mayo', 'scallion', 'nori', 'sriracha', 'kimchi']]],
+  ['peanutnoodles', 'Peanut noodles', ['street', 'bento', 'space'], [
+    ['chicken', 'shrimp', 'tofu', 'eggs'],
+    ['ricenoodle', 'ramen', 'pasta'],
+    ['pb', 'peanut', 'lime', 'scallion', 'cilantro', 'cucumber', 'carrot', 'sriracha', 'cabbage']]],
+  ['lettucewraps', 'Lettuce wraps', ['bento', 'space', 'fancy', 'tiny'], [
+    ['gpork', 'chicken', 'gturkey', 'tofu', 'shrimp'],
+    ['lettuce'],
+    ['soy', 'ginger', 'scallion', 'sriracha', 'peanut', 'carrot', 'sesameoil', 'lime', 'cucumber']]],
+  ['banhmi', 'Bánh mì-style sandwiches', ['street', 'picnic', 'space'], [
+    ['gpork', 'chicken', 'tofu', 'eggs'],
+    ['bread', 'buns'],
+    ['cucumber', 'cilantro', 'jalapeno', 'sriracha', 'mayo', 'carrot']]],
+  ['falafel', 'Chickpea patties in pita (falafel-style)', ['street', 'picnic', 'space'], [
+    ['chickpeas'],
+    ['pita', 'couscous', 'lettuce'],
+    ['tahini', 'hummus', 'yogurt', 'cucumber', 'tomato', 'parsley', 'mint', 'lemon', 'harissa', 'feta']]],
   // used for the Three Courses boss and the Tiny Food theme
   ['starter', 'Little bites to start', ['tiny'], [
     ['bread', 'crackers', 'pita', 'cucumber'],
